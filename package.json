@@ -1,5 +1,5 @@
 {
-  "name": "pg-escape",
+  "name": "@lanetix/pg-escape",
   "version": "0.1.0",
   "repository": "segmentio/pg-escape",
   "description": "escape postgres queries which do not support stored procedures",
