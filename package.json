@@ -1,6 +1,6 @@
 {
   "name": "@lanetix/pg-escape",
-  "version": "0.1.4-node-upgrade.1",
+  "version": "0.1.4-node-upgrade.2",
   "repository": "segmentio/pg-escape",
   "description": "escape postgres queries which do not support stored procedures",
   "keywords": [
