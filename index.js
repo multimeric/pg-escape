@@ -1,26 +1,26 @@
-
+const path = require('path')
 /**
  * Module dependencies.
  */
 
-var assert = require('assert');
-var fs = require('fs');
+const assert = require('assert')
+const fs = require('fs')
 
 /**
  * Reserved word map.
  */
 
-var txt = fs.readFileSync(__dirname + '/reserved.txt', 'utf8');
-var reserved = txt.split('\n').reduce(function(map, word){
-  map[word.toLowerCase()] = true;
-  return map;
-}, {});
+const txt = fs.readFileSync(path.join(__dirname, 'reserved.txt'), 'utf8')
+const reserved = txt.split('\n').reduce(function (map, word) {
+  map[word.toLowerCase()] = true
+  return map
+}, {})
 
 /**
  * Expose `format()`.
  */
 
-exports = module.exports = format;
+exports = module.exports = format
 
 /**
  * Format a string.
@@ -31,20 +31,20 @@ exports = module.exports = format;
  * @api public
  */
 
-function format(fmt) {
-  var i = 1;
-  var args = arguments;
-  return fmt.replace(/%([%sILQ])/g, function(_, type){
-    if ('%' == type) return '%';
+function format (fmt) {
+  let i = 1
+  const args = arguments
+  return fmt.replace(/%([%sILQ])/g, function (_, type) {
+    if (type === '%') return '%'
 
-    var arg = args[i++];
+    const arg = args[i++]
     switch (type) {
-      case 's': return exports.string(arg);
-      case 'I': return exports.ident(arg);
-      case 'L': return exports.literal(arg);
-      case 'Q': return exports.dollarQuotedString(arg);
+      case 's': return exports.string(arg)
+      case 'I': return exports.ident(arg)
+      case 'L': return exports.literal(arg)
+      case 'Q': return exports.dollarQuotedString(arg)
     }
-  });
+  })
 }
 
 /**
@@ -55,16 +55,16 @@ function format(fmt) {
  * @api public
  */
 
-exports.string = function(val){
-  return null == val ? '' : String(val);
-};
+exports.string = function (val) {
+  return val == null ? '' : String(val)
+}
 
 /**
  *  Dollar-Quoted String Constants
  */
 
-var randomTags = [ 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'g', 'j', 'k',
-  'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't'];
+const randomTags = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'g', 'j', 'k',
+  'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't']
 
 /**
  * produces a random number from a given range
@@ -75,9 +75,9 @@ var randomTags = [ 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'g', 'j', 'k',
  * @api private
  */
 
-function random(start, end) {
-  var range = end - start;
-  return Math.floor((Math.random() * range) + start);
+function random (start, end) {
+  const range = end - start
+  return Math.floor((Math.random() * range) + start)
 }
 
 /**
@@ -89,10 +89,10 @@ function random(start, end) {
  * @api public
  */
 
-exports.dollarQuotedString = function(val) {
-  if (val === undefined || val === null || val === '') return '';
-  var randomTag = '$'+ randomTags[ random(0, randomTags.length) ] +'$';
-  return randomTag + val + randomTag;
+exports.dollarQuotedString = function (val) {
+  if (val === undefined || val === null || val === '') return ''
+  const randomTag = '$' + randomTags[random(0, randomTags.length)] + '$'
+  return randomTag + val + randomTag
 }
 
 /**
@@ -103,10 +103,10 @@ exports.dollarQuotedString = function(val) {
  * @api public
  */
 
-exports.ident = function(val){
-  assert(null != val, 'identifier required');
-  return validIdent(val) ? val : quoteIdent(val);
-};
+exports.ident = function (val) {
+  assert(val != null, 'identifier required')
+  return validIdent(val) ? val : quoteIdent(val)
+}
 
 /**
  * Format as literal.
@@ -116,18 +116,18 @@ exports.ident = function(val){
  * @api public
  */
 
-exports.literal = function(val){
-  if (null == val) return 'NULL';
+exports.literal = function (val) {
+  if (val == null) return 'NULL'
   if (Array.isArray(val)) {
-    var vals = val.map(exports.literal)
-    return "(" + vals.join(", ") + ")"
+    const vals = val.map(exports.literal)
+    return '(' + vals.join(', ') + ')'
   }
-  var backslash = ~val.indexOf('\\');
-  var prefix = backslash ? 'E' : '';
-  val = val.replace(/'/g, "''");
-  val = val.replace(/\\/g, '\\\\');
-  return prefix + "'" + val + "'";
-};
+  const backslash = ~val.indexOf('\\')
+  const prefix = backslash ? 'E' : ''
+  val = val.replace(/'/g, "''")
+  val = val.replace(/\\/g, '\\\\')
+  return prefix + "'" + val + "'"
+}
 
 /**
  * Check if `id` is a valid unquoted identifier.
@@ -137,9 +137,9 @@ exports.literal = function(val){
  * @api private
  */
 
-function validIdent(id) {
-  if (reserved[id]) return false;
-  return /^[a-z_][a-z0-9_$]*$/.test(id);
+function validIdent (id) {
+  if (reserved[id]) return false
+  return /^[a-z_][a-z0-9_$]*$/.test(id)
 }
 
 /**
@@ -150,7 +150,7 @@ function validIdent(id) {
  * @api private
  */
 
-function quoteIdent(id) {
-  id = id.replace(/"/g, '""');
-  return '"' + id + '"';
+function quoteIdent (id) {
+  id = id.replace(/"/g, '""')
+  return '"' + id + '"'
 }
