@@ -1,6 +1,6 @@
 {
-  "name": "pg-escape",
-  "version": "0.1.0",
+  "name": "@lanetix/pg-escape",
+  "version": "0.1.4-node-upgrade.2",
   "repository": "segmentio/pg-escape",
   "description": "escape postgres queries which do not support stored procedures",
   "keywords": [
@@ -10,12 +10,18 @@
     "query"
   ],
   "scripts": {
-    "test": "mocha --require should --reporter spec"
+    "test": "mocha --require should --reporter spec",
+    "lint": "standard",
+    "check-for-update": "ncu",
+    "update-package": "ncu -u && npm install",
+    "prepare": "husky install"
   },
-  "dependencies": {},
   "devDependencies": {
-    "mocha": "*",
-    "should": "*"
+    "husky": "8.0.3",
+    "mocha": "10.2.0",
+    "npm-check-updates": "16.10.15",
+    "should": "13.2.3",
+    "standard": "17.1.0"
   },
   "license": "MIT"
 }
